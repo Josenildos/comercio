@@ -234,9 +234,20 @@ def listarPromocao(conbd):
     z = Lista[5]
     print(z[4])
 
-def cadastrarPedido(conbd, ID_Pedido, Data_Pedido, ID_Cliente, Total):
+def cadastrarPedido(conbd, nomeCliente, nomeProduto, quantProduto, formaPag, hoje):
     mycursor = conbd.cursor()
-    sql = 'INSERT INTO pedidos (ID_Pedido, Data_Pedido, ID_Cliente, Total) VALUES (%s, %s, %s, %s)'
+    sql = 'SELECT ID_Cliente FROM clientes where nome = %s' 
+    val = (nomeCliente,)
+    mycursor.execute(sql,val)
+    ID_Cliente = mycursor.fetchone()[0]
+
+    print("------------->",  ID_Cliente)
+
+    conbd.commit()
+    print("Pedido Incluido com Sucesso")
+
+
+    sql = 'INSERT INTO pedidos (Data_Pedido, ID_Cliente, Total) VALUES (%s, %s, %s, %s)'
     val = (ID_Pedido, Data_Pedido, ID_Cliente, Total)
     mycursor.execute(sql,val)
     conbd.commit()

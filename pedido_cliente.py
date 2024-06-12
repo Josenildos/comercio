@@ -1,6 +1,6 @@
 from bd import *
 from conexaobd import conexao
-
+from datetime import date
 conbd = conexao()
 
 while True:
@@ -13,9 +13,20 @@ while True:
     if opcao=="1":
         a = input("Digite o Nome do Cliente: ")
         b = input("Digite o Produto: ")
-        c = input("Digite a Quantidade: ") 
-        d = input("Escolha a forma de Pagamento: ") 
-        cadastrarPedido(conbd, a, b, c, d,)
+        c = int(input("Digite a Quantidade: "))
+        d = input("Escolha a forma de Pagamento: ")
+        hoje=date.today()
+        cadastrarPedido(conbd, a, b, c, d, hoje)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     # if opcao=="2":
     #     a = input("Selecione o Cliente: ")
     #     b = input("Digite o Novo Nome do Cliente: ")
