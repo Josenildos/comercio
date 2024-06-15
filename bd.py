@@ -240,11 +240,55 @@ def cadastrarPedido(conbd, nomeCliente, nomeProduto, quantProduto, formaPag, hoj
     val = (nomeCliente,)
     mycursor.execute(sql,val)
     ID_Cliente = mycursor.fetchone()[0]
+    # mycursor = conbd.cursor()
+    sql1 = 'SELECT Preco FROM produtos WHERE Nome = %s'
+    val1 = (nomeProduto,)
+    mycursor.execute(sql1,val1)
+    Preco = mycursor.fetchone()[0]
+    # Preco = Preco[0]
+    float(Preco)
+    Total = Preco * quantProduto
+    # mycursor = conbd.cursor()
+    sql2 = 'INSERT INTO pedidos (Data_Pedido, ID_Cliente, Total) VALUES (%s,%s,%s)'
+    val2 = (hoje, ID_Cliente, Total)
+    mycursor.execute(sql2,val2)
+    conbd.commit()
+    print("Pedido Incluido com Sucesso")
+    
+    mycursor.close()
+
+
+
+
+
+
+
+
+def atualizarEstoque(conbd, ID_Produto, Quantidade):
+    mycursor = conbd.cursor()
+    sql = 'UPDATE ID_Produto SET estoque = %s, WHERE ID_Produto = %s'
+    val = (ID_Produto,)
+    mycursor.execute(sql,val)
+    ID_Produto = mycursor.fetchone()[0]
+    
+def atualizarEstoque(conbd, ID_Produto, Quantidade):
+    mycursor = conbd.cursor()
+    sql = 'UPDATE ID_Produto SET estoque = %s, WHERE ID_Produto = %s'
+    val = (ID_Produto,)
+    mycursor.execute(sql,val)
+    ID_Produto = mycursor.fetchone()[0]
+
+
+
+
+
+
+
+
+
 
     print("------------->",  ID_Cliente)
 
-    conbd.commit()
-    print("Pedido Incluido com Sucesso")
 
 
     sql = 'INSERT INTO pedidos (Data_Pedido, ID_Cliente, Total) VALUES (%s, %s, %s, %s)'
