@@ -245,16 +245,27 @@ def cadastrarPedido(conbd, nomeCliente, nomeProduto, quantProduto, formaPag, hoj
     val1 = (nomeProduto,)
     mycursor.execute(sql1,val1)
     Preco = mycursor.fetchone()[0]
-    # Preco = Preco[0]
     float(Preco)
-    Total = Preco * quantProduto
-    # mycursor = conbd.cursor()
+    Total = Preco * quantProduto    
     sql2 = 'INSERT INTO pedidos (Data_Pedido, ID_Cliente, Total) VALUES (%s,%s,%s)'
     val2 = (hoje, ID_Cliente, Total)
     mycursor.execute(sql2,val2)
+    sql3 = 'SELECT ID_Produto FROM produtos WHERE Nome = %s'
+    val3 = (nomeProduto,)
+    mycursor.execute(sql3,val3)
+    ID_Produto = mycursor.fetchone()[0]
+    sql4 = 'SELECT Quantidade FROM estoque WHERE ID_Produto = %s'
+    val4 = (ID_Produto,)
+    mycursor.execute(sql4,val4)
+    Quantidade = mycursor.fetchone()[0]
+    int(Quantidade)
+    QuantAtual = Quantidade - quantProduto
+    print(QuantAtual)
+    sql5 = 'UPDATE estoque SET Quantidade = %s WHERE ID_Produto = %s'
+    val5 = (QuantAtual, ID_Produto)
+    mycursor.execute(sql5,val5)
     conbd.commit()
-    print("Pedido Incluido com Sucesso")
-    
+    print("Pedido Incluido com Sucesso")    
     mycursor.close()
 
 
@@ -264,6 +275,10 @@ def cadastrarPedido(conbd, nomeCliente, nomeProduto, quantProduto, formaPag, hoj
 
 
 
+
+
+
+
 def atualizarEstoque(conbd, ID_Produto, Quantidade):
     mycursor = conbd.cursor()
     sql = 'UPDATE ID_Produto SET estoque = %s, WHERE ID_Produto = %s'
@@ -278,18 +293,7 @@ def atualizarEstoque(conbd, ID_Produto, Quantidade):
     mycursor.execute(sql,val)
     ID_Produto = mycursor.fetchone()[0]
 
-
-
-
-
-
-
-
-
-
     print("------------->",  ID_Cliente)
-
-
 
     sql = 'INSERT INTO pedidos (Data_Pedido, ID_Cliente, Total) VALUES (%s, %s, %s, %s)'
     val = (ID_Pedido, Data_Pedido, ID_Cliente, Total)
@@ -298,27 +302,4 @@ def atualizarEstoque(conbd, ID_Produto, Quantidade):
     print("Pedido Incluido com Sucesso")
     
     mycursor.close()
-
-# def alterarPedido(conbd, anterior, Nome, Sobrenome, Endereco, Cidade, CodigoPostal):
-#     mycursor = conbd.cursor()
-#     sql = 'UPDATE pedidos SET Nome = %s, Sobrenome = %s, Endereco = %s, Cidade = %s, CodigoPostal = %s WHERE Nome = %s'
-#     val = (Nome, Sobrenome, Endereco, Cidade, CodigoPostal, anterior)
-#     mycursor.execute(sql,val)
-#     conbd.commit()
-#     print("Cliente Atualizado com Sucesso")
-    
-#     mycursor.close()
-
-# def deletarPedido(conbd, Nome):
-#     mycursor = conbd.cursor()
-#     sql = 'DELETE FROM pedidos WHERE Nome = %s'
-#     val = (Nome,)
-#     mycursor.execute(sql,val)
-#     conbd.commit()
-#     print("Cliente Excluido com sucesso")
-    
-#     mycursor.close()
-
-
-
 
